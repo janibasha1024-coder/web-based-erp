@@ -1,0 +1,39 @@
+@model List<Vendor>
+@{
+    ViewData["Title"] = "Vendors";
+    ViewData["Nav"] = "vendors";
+}
+
+<div class="toolbar">
+    <p class="count">@Model.Count vendors</p>
+    <a class="button" href="/Vendors/Create">New vendor</a>
+</div>
+
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th class="num">Open orders</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var vendor in Model)
+            {
+                var openOrders = vendor.PurchaseOrders.Count(order => PurchaseOrderStatus.IsOpen(order.Status));
+                <tr>
+                    <td><a href="/Vendors/Details/@vendor.Id">@vendor.Name</a></td>
+                    <td>@vendor.Category</td>
+                    <td>@vendor.Email</td>
+                    <td>@vendor.City</td>
+                    <td class="num">@openOrders</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

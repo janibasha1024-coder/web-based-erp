@@ -1,0 +1,38 @@
+@model List<Customer>
+@{
+    ViewData["Title"] = "Customers";
+    ViewData["Nav"] = "customers";
+}
+
+<div class="toolbar">
+    <p class="count">@Model.Count customers</p>
+    <a class="button" href="/Customers/Create">New customer</a>
+</div>
+
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th class="num">Invoices</th>
+                    <th class="num">Open balance</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td><a href="/Customers/Details/@customer.Id">@customer.Name</a></td>
+                    <td>@customer.Email</td>
+                    <td>@customer.City, @customer.State</td>
+                    <td class="num">@customer.Invoices.Count</td>
+                    <td class="num">@Totals.Outstanding(customer).ToString("C")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

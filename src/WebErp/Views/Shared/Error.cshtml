@@ -1,0 +1,10 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<p class="lede">Something went wrong while opening this page.</p>
+@if (Model.ShowRequestId)
+{
+    <p class="empty">Request ID: @Model.RequestId</p>
+}

@@ -1,0 +1,89 @@
+﻿@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Nav"] = "dashboard";
+}
+
+<p class="lede">Open invoices and purchase orders for the sample company. Every name and amount on this site is made up.</p>
+
+<section class="metrics" aria-label="Summary">
+    <a class="metric" href="/Customers">
+        <span>Customers</span>
+        <strong>@Model.CustomerCount</strong>
+    </a>
+    <a class="metric" href="/Invoices">
+        <span>Open invoices</span>
+        <strong>@Model.OpenInvoiceTotal.ToString("C")</strong>
+        <small>@Model.OpenInvoiceCount open</small>
+    </a>
+    <a class="metric" href="/Vendors">
+        <span>Vendors</span>
+        <strong>@Model.VendorCount</strong>
+    </a>
+    <a class="metric" href="/PurchaseOrders">
+        <span>Open purchase orders</span>
+        <strong>@Model.OpenPurchaseOrderTotal.ToString("C")</strong>
+        <small>@Model.OpenPurchaseOrderCount open</small>
+    </a>
+</section>
+
+<div class="split">
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Recent invoices</h2>
+            <a href="/Invoices">View all</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th class="num">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var invoice in Model.RecentInvoices)
+                {
+                    <tr>
+                        <td><a href="/Invoices/Details/@invoice.Id">@invoice.Number</a></td>
+                        <td>@invoice.Customer?.Name</td>
+                        <td><span class="badge badge-@invoice.Status.ToLowerInvariant()">@invoice.Status</span></td>
+                        <td class="num">@Totals.For(invoice).ToString("C")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Recent purchase orders</h2>
+            <a href="/PurchaseOrders">View all</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Vendor</th>
+                        <th>Status</th>
+                        <th class="num">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var order in Model.RecentPurchaseOrders)
+                {
+                    <tr>
+                        <td><a href="/PurchaseOrders/Details/@order.Id">@order.Number</a></td>
+                        <td>@order.Vendor?.Name</td>
+                        <td><span class="badge badge-@order.Status.ToLowerInvariant()">@order.Status</span></td>
+                        <td class="num">@Totals.For(order).ToString("C")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

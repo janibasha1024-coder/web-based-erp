@@ -1,0 +1,72 @@
+@model Vendor
+@{
+    ViewData["Title"] = Model.Name;
+    ViewData["Nav"] = "vendors";
+}
+
+<div class="toolbar">
+    <a href="/Vendors">All vendors</a>
+    <a class="button" href="/Vendors/Edit/@Model.Id">Edit</a>
+</div>
+
+<section class="panel detail-grid">
+    <div>
+        <span>Email</span>
+        <strong>@Model.Email</strong>
+    </div>
+    <div>
+        <span>Phone</span>
+        <strong>@(string.IsNullOrWhiteSpace(Model.Phone) ? "—" : Model.Phone)</strong>
+    </div>
+    <div>
+        <span>City</span>
+        <strong>@Model.City</strong>
+    </div>
+    <div>
+        <span>Category</span>
+        <strong>@Model.Category</strong>
+    </div>
+    <div>
+        <span>Open orders</span>
+        <strong>@Totals.OpenOrders(Model).ToString("C")</strong>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <h2>Purchase orders</h2>
+        <a href="/PurchaseOrders/Create">New purchase order</a>
+    </div>
+    @if (Model.PurchaseOrders.Count == 0)
+    {
+        <p class="empty">No purchase orders for this vendor yet.</p>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Ordered</th>
+                        <th>Expected</th>
+                        <th>Status</th>
+                        <th class="num">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var order in Model.PurchaseOrders.OrderByDescending(order => order.OrderDate))
+                {
+                    <tr>
+                        <td><a href="/PurchaseOrders/Details/@order.Id">@order.Number</a></td>
+                        <td>@order.OrderDate.ToString("MMM d, yyyy")</td>
+                        <td>@order.ExpectedDate.ToString("MMM d, yyyy")</td>
+                        <td><span class="badge badge-@order.Status.ToLowerInvariant()">@order.Status</span></td>
+                        <td class="num">@Totals.For(order).ToString("C")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

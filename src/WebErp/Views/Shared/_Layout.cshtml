@@ -1,0 +1,50 @@
+﻿@{
+    var nav = ViewData["Nav"] as string ?? "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] · Harbor ERP</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="shell">
+        <aside class="sidebar">
+            <a class="brand" href="/">
+                <span class="mark" aria-hidden="true">H</span>
+                <span>
+                    <strong>Harbor ERP</strong>
+                    <small>Office supply sample</small>
+                </span>
+            </a>
+            <nav class="nav" aria-label="Main">
+                <a class="@(nav == "dashboard" ? "active" : null)" href="/">Dashboard</a>
+                <a class="@(nav == "customers" ? "active" : null)" href="/Customers">Customers</a>
+                <a class="@(nav == "invoices" ? "active" : null)" href="/Invoices">Invoices</a>
+                <a class="@(nav == "vendors" ? "active" : null)" href="/Vendors">Vendors</a>
+                <a class="@(nav == "orders" ? "active" : null)" href="/PurchaseOrders">Purchase orders</a>
+            </nav>
+            <p class="side-note">Portfolio sample. The company and records are fictional.</p>
+        </aside>
+        <div class="main">
+            <header class="topbar">
+                <button type="button" class="nav-toggle" data-nav-toggle aria-label="Open menu">Menu</button>
+                <div>
+                    <p class="eyebrow">Harbor Office Supply</p>
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+            </header>
+            <main class="content">
+                @if (TempData["Message"] is string message)
+                {
+                    <p class="banner" role="status">@message</p>
+                }
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

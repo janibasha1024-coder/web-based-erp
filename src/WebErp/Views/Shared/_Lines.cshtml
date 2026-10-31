@@ -1,0 +1,43 @@
+@model List<LineFormModel>
+<div class="lines">
+    <div class="lines-head">
+        <h2>Lines</h2>
+        <button type="button" class="button button-quiet" data-add-line>Add line</button>
+    </div>
+    <div class="table-wrap">
+        <table data-line-table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th class="num">Qty</th>
+                    <th class="num">Unit price</th>
+                    <th class="num">Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input name="Lines[@i].Description" value="@Model[i].Description" maxlength="160" />
+                        <span class="field-error">@Html.ValidationMessage($"Lines[{i}].Description")</span>
+                    </td>
+                    <td>
+                        <input name="Lines[@i].Quantity" data-qty value="@Model[i].Quantity.ToString("0.##")" inputmode="decimal" />
+                        <span class="field-error">@Html.ValidationMessage($"Lines[{i}].Quantity")</span>
+                    </td>
+                    <td>
+                        <input name="Lines[@i].UnitPrice" data-price value="@Model[i].UnitPrice.ToString("0.00")" inputmode="decimal" />
+                        <span class="field-error">@Html.ValidationMessage($"Lines[{i}].UnitPrice")</span>
+                    </td>
+                    <td class="num amount" data-amount></td>
+                    <td class="line-action">
+                        <button type="button" class="button button-quiet" data-remove-line>Remove</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

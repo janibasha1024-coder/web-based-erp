@@ -1,0 +1,68 @@
+@model Customer
+@{
+    ViewData["Title"] = Model.Name;
+    ViewData["Nav"] = "customers";
+}
+
+<div class="toolbar">
+    <a href="/Customers">All customers</a>
+    <a class="button" href="/Customers/Edit/@Model.Id">Edit</a>
+</div>
+
+<section class="panel detail-grid">
+    <div>
+        <span>Email</span>
+        <strong>@Model.Email</strong>
+    </div>
+    <div>
+        <span>Phone</span>
+        <strong>@(string.IsNullOrWhiteSpace(Model.Phone) ? "—" : Model.Phone)</strong>
+    </div>
+    <div>
+        <span>City</span>
+        <strong>@Model.City, @Model.State</strong>
+    </div>
+    <div>
+        <span>Open balance</span>
+        <strong>@Totals.Outstanding(Model).ToString("C")</strong>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <h2>Invoices</h2>
+        <a href="/Invoices/Create">New invoice</a>
+    </div>
+    @if (Model.Invoices.Count == 0)
+    {
+        <p class="empty">No invoices for this customer yet.</p>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Issued</th>
+                        <th>Due</th>
+                        <th>Status</th>
+                        <th class="num">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var invoice in Model.Invoices.OrderByDescending(invoice => invoice.IssueDate))
+                {
+                    <tr>
+                        <td><a href="/Invoices/Details/@invoice.Id">@invoice.Number</a></td>
+                        <td>@invoice.IssueDate.ToString("MMM d, yyyy")</td>
+                        <td>@invoice.DueDate.ToString("MMM d, yyyy")</td>
+                        <td><span class="badge badge-@invoice.Status.ToLowerInvariant()">@invoice.Status</span></td>
+                        <td class="num">@Totals.For(invoice).ToString("C")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

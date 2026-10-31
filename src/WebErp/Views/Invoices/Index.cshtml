@@ -1,0 +1,40 @@
+@model List<Invoice>
+@{
+    ViewData["Title"] = "Invoices";
+    ViewData["Nav"] = "invoices";
+}
+
+<div class="toolbar">
+    <p class="count">@Model.Count invoices</p>
+    <a class="button" href="/Invoices/Create">New invoice</a>
+</div>
+
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Customer</th>
+                    <th>Issued</th>
+                    <th>Due</th>
+                    <th>Status</th>
+                    <th class="num">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var invoice in Model)
+            {
+                <tr>
+                    <td><a href="/Invoices/Details/@invoice.Id">@invoice.Number</a></td>
+                    <td>@invoice.Customer?.Name</td>
+                    <td>@invoice.IssueDate.ToString("MMM d, yyyy")</td>
+                    <td>@invoice.DueDate.ToString("MMM d, yyyy")</td>
+                    <td><span class="badge badge-@invoice.Status.ToLowerInvariant()">@invoice.Status</span></td>
+                    <td class="num">@Totals.For(invoice).ToString("C")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

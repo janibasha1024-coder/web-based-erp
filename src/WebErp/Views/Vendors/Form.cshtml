@@ -1,0 +1,43 @@
+@model Vendor
+@{
+    var isNew = Model.Id == 0;
+    ViewData["Title"] = isNew ? "New vendor" : "Edit vendor";
+    ViewData["Nav"] = "vendors";
+}
+
+<form method="post" action="@(isNew ? "/Vendors/Create" : $"/Vendors/Edit/{Model.Id}")" class="panel form-panel">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="banner banner-error"></div>
+    <div class="form-grid">
+        <label>
+            Name
+            <input asp-for="Name" />
+            <span class="field-error" asp-validation-for="Name"></span>
+        </label>
+        <label>
+            Email
+            <input asp-for="Email" />
+            <span class="field-error" asp-validation-for="Email"></span>
+        </label>
+        <label>
+            Phone
+            <input asp-for="Phone" />
+            <span class="field-error" asp-validation-for="Phone"></span>
+        </label>
+        <label>
+            City
+            <input asp-for="City" />
+            <span class="field-error" asp-validation-for="City"></span>
+        </label>
+        <label>
+            Category
+            <input asp-for="Category" />
+            <span class="field-error" asp-validation-for="Category"></span>
+        </label>
+    </div>
+    <div class="form-actions">
+        <button class="button" type="submit">Save vendor</button>
+        <a class="button button-quiet" href="@(isNew ? "/Vendors" : $"/Vendors/Details/{Model.Id}")">Cancel</a>
+    </div>
+</form>

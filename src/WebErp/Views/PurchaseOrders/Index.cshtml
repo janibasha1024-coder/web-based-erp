@@ -1,0 +1,40 @@
+@model List<PurchaseOrder>
+@{
+    ViewData["Title"] = "Purchase orders";
+    ViewData["Nav"] = "orders";
+}
+
+<div class="toolbar">
+    <p class="count">@Model.Count purchase orders</p>
+    <a class="button" href="/PurchaseOrders/Create">New purchase order</a>
+</div>
+
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Vendor</th>
+                    <th>Ordered</th>
+                    <th>Expected</th>
+                    <th>Status</th>
+                    <th class="num">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td><a href="/PurchaseOrders/Details/@order.Id">@order.Number</a></td>
+                    <td>@order.Vendor?.Name</td>
+                    <td>@order.OrderDate.ToString("MMM d, yyyy")</td>
+                    <td>@order.ExpectedDate.ToString("MMM d, yyyy")</td>
+                    <td><span class="badge badge-@order.Status.ToLowerInvariant()">@order.Status</span></td>
+                    <td class="num">@Totals.For(order).ToString("C")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>

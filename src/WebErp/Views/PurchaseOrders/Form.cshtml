@@ -1,0 +1,46 @@
+@model PurchaseOrderFormModel
+@{
+    var isNew = Model.Id == 0;
+    ViewData["Title"] = isNew ? "New purchase order" : $"Edit {Model.Number}";
+    ViewData["Nav"] = "orders";
+}
+
+<form method="post" action="@(isNew ? "/PurchaseOrders/Create" : $"/PurchaseOrders/Edit/{Model.Id}")" class="panel form-panel">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="banner banner-error"></div>
+    <div class="form-grid">
+        <label>
+            Vendor
+            <select asp-for="VendorId" asp-items="Model.Vendors">
+                <option value="">Select a vendor</option>
+            </select>
+            <span class="field-error" asp-validation-for="VendorId"></span>
+        </label>
+        <label>
+            Status
+            <select asp-for="Status">
+                @foreach (var status in PurchaseOrderStatus.All)
+                {
+                    <option value="@status">@status</option>
+                }
+            </select>
+            <span class="field-error" asp-validation-for="Status"></span>
+        </label>
+        <label>
+            Order date
+            <input asp-for="OrderDate" type="date" />
+            <span class="field-error" asp-validation-for="OrderDate"></span>
+        </label>
+        <label>
+            Expected date
+            <input asp-for="ExpectedDate" type="date" />
+            <span class="field-error" asp-validation-for="ExpectedDate"></span>
+        </label>
+    </div>
+    <partial name="_Lines" model="Model.Lines" />
+    <div class="form-actions">
+        <button class="button" type="submit">Save purchase order</button>
+        <a class="button button-quiet" href="@(isNew ? "/PurchaseOrders" : $"/PurchaseOrders/Details/{Model.Id}")">Cancel</a>
+    </div>
+</form>

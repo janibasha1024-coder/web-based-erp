@@ -1,0 +1,17 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: weberp-sql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "WebErp_Local1!"
+      MSSQL_PID: "Developer"
+      MSSQL_MEMORY_LIMIT_MB: "2048"
+    ports:
+      - "1433:1433"
+    volumes:
+      - weberp_sql:/var/opt/mssql
+
+volumes:
+  weberp_sql:

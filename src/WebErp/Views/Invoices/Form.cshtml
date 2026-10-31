@@ -1,0 +1,46 @@
+@model InvoiceFormModel
+@{
+    var isNew = Model.Id == 0;
+    ViewData["Title"] = isNew ? "New invoice" : $"Edit {Model.Number}";
+    ViewData["Nav"] = "invoices";
+}
+
+<form method="post" action="@(isNew ? "/Invoices/Create" : $"/Invoices/Edit/{Model.Id}")" class="panel form-panel">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="banner banner-error"></div>
+    <div class="form-grid">
+        <label>
+            Customer
+            <select asp-for="CustomerId" asp-items="Model.Customers">
+                <option value="">Select a customer</option>
+            </select>
+            <span class="field-error" asp-validation-for="CustomerId"></span>
+        </label>
+        <label>
+            Status
+            <select asp-for="Status">
+                @foreach (var status in InvoiceStatus.All)
+                {
+                    <option value="@status">@status</option>
+                }
+            </select>
+            <span class="field-error" asp-validation-for="Status"></span>
+        </label>
+        <label>
+            Issue date
+            <input asp-for="IssueDate" type="date" />
+            <span class="field-error" asp-validation-for="IssueDate"></span>
+        </label>
+        <label>
+            Due date
+            <input asp-for="DueDate" type="date" />
+            <span class="field-error" asp-validation-for="DueDate"></span>
+        </label>
+    </div>
+    <partial name="_Lines" model="Model.Lines" />
+    <div class="form-actions">
+        <button class="button" type="submit">Save invoice</button>
+        <a class="button button-quiet" href="@(isNew ? "/Invoices" : $"/Invoices/Details/{Model.Id}")">Cancel</a>
+    </div>
+</form>
