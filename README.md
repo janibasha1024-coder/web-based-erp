@@ -1,8 +1,8 @@
-# Harbor ERP
+# Web ERP
 
-Harbor ERP is a small web ERP for a personal portfolio. It is a recreation of an academic ERP project from 2023. The original source was not on this machine, so this app was built again around the same work: a dashboard, customers, invoices, vendors, and purchase orders.
+Web ERP is a small web ERP for a personal portfolio. It is a recreation of an academic ERP project from 2023. The original source was not on this machine, so this app was built again around the same work: a dashboard, customers, invoices, vendors, and purchase orders.
 
-This folder is separate from Mynbook and from NAZ HS. The company in the app, Harbor Office Supply, is fictional. Every customer, vendor, invoice, and amount is sample data.
+This folder is separate from Mynbook and from NAZ HS. The records in the app are fictional sample data.
 
 ## Stack
 
